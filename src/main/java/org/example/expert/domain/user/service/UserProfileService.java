@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.expert.domain.common.exception.InvalidRequestException;
 import org.example.expert.domain.image.consts.FilePath;
 import org.example.expert.domain.image.provider.ImageStorageProvider;
+import org.example.expert.domain.user.dto.response.UserProfileResponse;
 import org.example.expert.domain.user.entity.ProfileImage;
 import org.example.expert.domain.user.entity.User;
 import org.example.expert.domain.user.repository.UserRepository;
@@ -20,6 +21,16 @@ public class UserProfileService {
     private final UserRepository userRepository;
     private final ImageStorageProvider imageStorageProvider;
 
+    @Transactional(readOnly = true)
+    public UserProfileResponse getUserProfile(Long userId) {
+        User user = userRepository.findByIdWithProfileImage(userId).orElseThrow(() -> new InvalidRequestException("User not found"));
+
+        return new UserProfileResponse(
+                user.getId(),user.getEmail(),
+                user.getNickname(),
+                user.getProfileImageUrl() // NPE 방지
+        );
+    }
 
     @Transactional
     public void uploadProfileImage(Long userId, MultipartFile file) {
