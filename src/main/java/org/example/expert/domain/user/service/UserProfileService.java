@@ -23,7 +23,7 @@ public class UserProfileService {
 
     @Transactional(readOnly = true)
     public UserProfileResponse getUserProfile(Long userId) {
-        User user = userRepository.findByIdWithProfileImage(userId).orElseThrow(() -> new InvalidRequestException("User not found"));
+        User user = getUserById(userId);
 
         return new UserProfileResponse(
                 user.getId(),user.getEmail(),
@@ -34,17 +34,17 @@ public class UserProfileService {
 
     @Transactional
     public void uploadProfileImage(Long userId, MultipartFile file) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new InvalidRequestException("User not found"));
+        User user = getUserById(userId);
         if(user.getProfileImage() != null) {
             throw new InvalidRequestException("Profile image already exists");
         }
 
-        user.updateProfileImage(uploadProfileImage(file));
+        user.updateProfileImage(uploadProfileImageToStorage(file));
     }
 
     @Transactional
     public void deleteProfileImage(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new InvalidRequestException("User not found"));
+        User user = getUserById(userId);
         if(user.getProfileImage() == null) {
             throw new InvalidRequestException("Profile image does not exist");
         }
@@ -53,7 +53,7 @@ public class UserProfileService {
         user.deleteProfileImage();
     }
 
-    public ProfileImage uploadProfileImage(MultipartFile file) {
+    private ProfileImage uploadProfileImageToStorage(MultipartFile file) {
         String uniquePrefix = UUID.randomUUID() + "_";
         String storedFileName = FilePath.PROFILE_FILE_PATH + uniquePrefix + file.getOriginalFilename();
         String storedFileUrl = imageStorageProvider.uploadFile(
@@ -65,5 +65,10 @@ public class UserProfileService {
                 .storedFileName(storedFileName)
                 .storedFileUrl(storedFileUrl)
                 .build();
+    }
+
+    private User getUserById(Long userId) {
+        return userRepository.findByIdWithProfileImage(userId)
+                .orElseThrow(() -> new InvalidRequestException("User not found"));
     }
 }
