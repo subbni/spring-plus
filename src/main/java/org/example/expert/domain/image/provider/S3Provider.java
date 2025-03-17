@@ -44,7 +44,7 @@ public class S3Provider implements ImageStorageProvider {
                     RequestBody.fromBytes(file.getBytes())
             );
 
-            return getFiletUrl(fileName);
+            return getFileUrl(fileName);
         } catch (IOException e) {
             throw new ServerException("Failed to upload file.");
         }
@@ -60,7 +60,7 @@ public class S3Provider implements ImageStorageProvider {
         );
     }
 
-    public String getFiletUrl(String fileName) {
+    public String getFileUrl(String fileName) {
         return String.format("https://%s.s3.%s.amazonaws.com/%s",
                 bucketName,
                 region,
