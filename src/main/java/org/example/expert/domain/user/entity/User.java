@@ -23,6 +23,9 @@ public class User extends Timestamped {
     private String nickname;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "profile_image_id")
+    private ProfileImage profileImage;
 
     public User(String email, String password, String nickname, UserRole userRole) {
         this.email = email;
@@ -58,5 +61,21 @@ public class User extends Timestamped {
 
     public void updateRole(UserRole userRole) {
         this.userRole = userRole;
+    }
+
+    public void updateProfileImage(ProfileImage profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public void deleteProfileImage() {
+        this.profileImage = null;
+    }
+
+    public String getProfileImageUrl() {
+        if(this.profileImage == null) {
+            return null;
+        }
+
+        return this.profileImage.getStoredFileUrl();
     }
 }
