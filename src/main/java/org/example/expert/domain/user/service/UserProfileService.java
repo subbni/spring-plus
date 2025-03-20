@@ -3,6 +3,7 @@ package org.example.expert.domain.user.service;
 import lombok.RequiredArgsConstructor;
 import org.example.expert.domain.common.exception.InvalidRequestException;
 import org.example.expert.domain.image.consts.FilePath;
+import org.example.expert.domain.image.dto.ImageUploadResult;
 import org.example.expert.domain.image.provider.ImageStorageProvider;
 import org.example.expert.domain.user.dto.response.UserProfileResponse;
 import org.example.expert.domain.user.entity.ProfileImage;
@@ -39,7 +40,8 @@ public class UserProfileService {
             throw new InvalidRequestException("Profile image already exists");
         }
 
-        user.updateProfileImage(uploadProfileImageToStorage(file));
+        ImageUploadResult uploadResult = imageStorageProvider.uploadFile(file, FilePath.PROFILE_FILE_PATH);
+        user.updateProfileImage(new ProfileImage(uploadResult.getStoredFileName(), uploadResult.getStoredFileUrl()));
     }
 
     @Transactional
@@ -51,20 +53,6 @@ public class UserProfileService {
 
         imageStorageProvider.deleteFile(user.getProfileImage().getStoredFileName());
         user.deleteProfileImage();
-    }
-
-    private ProfileImage uploadProfileImageToStorage(MultipartFile file) {
-        String uniquePrefix = UUID.randomUUID() + "_";
-        String storedFileName = FilePath.PROFILE_FILE_PATH + uniquePrefix + file.getOriginalFilename();
-        String storedFileUrl = imageStorageProvider.uploadFile(
-                file,
-                FilePath.PROFILE_FILE_PATH + uniquePrefix
-        );
-
-        return ProfileImage.builder()
-                .storedFileName(storedFileName)
-                .storedFileUrl(storedFileUrl)
-                .build();
     }
 
     private User getUserById(Long userId) {

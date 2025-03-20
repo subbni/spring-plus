@@ -1,9 +1,10 @@
 package org.example.expert.domain.image.provider;
 
+import org.example.expert.domain.image.dto.ImageUploadResult;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface ImageStorageProvider {
 
-    String uploadFile(MultipartFile file, String path);
+    ImageUploadResult uploadFile(MultipartFile file, String path);
     void deleteFile(String fileName);
 }
