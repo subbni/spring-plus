@@ -33,7 +33,7 @@
 ### 12. AWS 활용
 #### 12-1. EC2
 - Public IPv4 : `3.36.150.240`
-- [health check API 구현](https://github.com/subbni/spring-plus/pull/11/commits/e4a6614703e61c0830c4b4b7364edf218bbbf20a)
+- [health check API 구현](https://github.com/subbni/spring-plus/commit/ea6f519e121f7cd5a3bd03fb38f97a0f4e560821)
 - health check API : `GET /health` : `http://3.36.150.240:8080/health`
   <img width="1000" alt="Screenshot 2025-03-20 at 14 32 10" src="https://github.com/user-attachments/assets/59921484-8515-4f08-83bc-cfc29dbffba3" />
 - 콘솔창
@@ -50,6 +50,7 @@
 
 
 ### 13. 대용량 데이터 처리
+- [닉네임으로 유저 목록 검색 API 작성](https://github.com/subbni/spring-plus/commit/c3765b727e7800ceac8c56f183bdef57b9f3efbc)
 > 사용자 데이터 1,000,000개 입력 - [테스트 코드](https://github.com/subbni/spring-plus/blob/main/src/test/java/org/example/expert/performance/UserDataBatchInsertTest.java)
 >  <img width="1000" alt="Screenshot 2025-03-19 at 15 18 33" src="https://github.com/user-attachments/assets/b58004d7-17d5-48cc-9c84-43b14c55ee71" />
 
