@@ -40,6 +40,7 @@
   <img width="1000" alt="Screenshot 2025-03-20 at 13 45 34" src="https://github.com/user-attachments/assets/996fefef-f7ec-471a-af1f-de5c85cbffe3" />
 
 #### 12-2 RDS
+- EC2 Springboot 서버와 연결
 - 콘솔창
   <img width="1000" alt="Screenshot 2025-03-20 at 13 45 50" src="https://github.com/user-attachments/assets/5dfcb947-e30f-4429-bc7a-53e09bfe85ac" />
 
